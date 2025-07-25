@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply - Silicon Circle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">Silicon Circle</div>
+            <div class="loading-bar"></div>
+            <p class="boot-text">LOADING APPLICATION...</p>
+        </div>
+    </div>
+
+    <div class="cursor"></div>
+    <header>
+        <div class="logo">Silicon Circle</div>
+        <nav class="top-nav">
+            <ul>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="apply.html">Apply</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-wrapper">
+        <aside class="side-nav">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#stats">Stats</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="apply.html" class="active">Apply</a></li>
+                    <li><a href="index.html#team">Team</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#faq">FAQs</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main>
+            <section id="apply" data-image="https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=2106&auto=format&fit=crop">
+                <div class="content-block">
+                    <h2>Join the Circle</h2>
+                    <p>We are looking for passionate and driven teens who are eager to learn and build with a community of peers. Applications are reviewed on a rolling basis.</p>
+                    <p>To apply, please fill out the form below. We'll get back to you as soon as possible!</p>
+                    <form class="apply-form">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age:</label>
+                            <input type="number" id="age" name="age" required min="13" max="19">
+                        </div>
+                        <div class="form-group">
+                            <label for="interest">Why do you want to join Silicon Circle?</label>
+                            <textarea id="interest" name="interest" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="cta-button">Submit Application</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <section id="terminal-section">
+            <h2>Terminal</h2>
+            <div class="terminal-output">Welcome to the Silicon Circle terminal. Type 'help' for commands.</div>
+            <input type="text" class="terminal-input" placeholder=">" autofocus>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
