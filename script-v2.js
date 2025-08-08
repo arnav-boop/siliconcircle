@@ -25,7 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         splashScreen.classList.add('hidden');
         if (bootSound) {
-            bootSound.play();
+            try {
+                bootSound.play();
+            } catch (error) {
+                console.log("Audio autoplay was prevented by the browser.");
+            }
         }
     }, 3000); // 3 seconds
 
@@ -79,50 +83,47 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroSection && statsSection && faqSection) {
             const statsSectionTop = statsSection.offsetTop;
             const faqSectionTop = faqSection.offsetTop;
-            const computerHeight = fixedComputerDisplay.offsetHeight;
             const viewportHeight = window.innerHeight;
-
             const unstickScrollPosition = faqSectionTop - viewportHeight;
 
-            if (window.scrollY < statsSectionTop) {
-                // On hero section: hidden
-                gsap.to(fixedComputerDisplay, {
-                    right: '-700px',
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: 'power2.out',
-                    onComplete: () => {
-                        pageWrapper.classList.remove('computer-active');
+            // Using GSAP's matchMedia for responsive animations
+            gsap.matchMedia().add({
+                isDesktop: `(min-width: 769px)`,
+                isMobile: `(max-width: 768px)`
+            }, (context) => {
+                let { isDesktop, isMobile } = context.conditions;
+
+                if (window.scrollY < statsSectionTop) {
+                    // On hero section: hidden
+                    if (isDesktop) {
+                        gsap.to(fixedComputerDisplay, { right: '-700px', opacity: 0, duration: 0.5, ease: 'power2.out' });
+                    } else {
+                        gsap.to(fixedComputerDisplay, { opacity: 0, scale: 0.9, duration: 0.5, ease: 'power2.out' });
                     }
-                });
-            } else if (window.scrollY >= statsSectionTop && window.scrollY < unstickScrollPosition) {
-                // After hero, before unstick point (FAQ): fixed in center
-                pageWrapper.classList.add('computer-active');
-                gsap.to(fixedComputerDisplay, {
-                    right: '50px',
-                    opacity: 1,
-                    duration: 0.8,
-                    ease: 'power2.out',
-                    rotation: 0
-                });
-            } else {
-                // After unstick point (at or after FAQ): scrolls away
-                gsap.to(fixedComputerDisplay, {
-                    right: '-700px',
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: 'power2.in',
-                    onComplete: () => {
-                        pageWrapper.classList.remove('computer-active');
+                    pageWrapper.classList.remove('computer-active');
+                } else if (window.scrollY >= statsSectionTop && window.scrollY < unstickScrollPosition) {
+                    // After hero, before unstick point (FAQ): fixed in center
+                    pageWrapper.classList.add('computer-active');
+                    if (isDesktop) {
+                        gsap.to(fixedComputerDisplay, { right: '50px', opacity: 1, duration: 0.8, ease: 'power2.out' });
+                    } else {
+                        gsap.to(fixedComputerDisplay, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' });
                     }
-                });
-            }
+                } else {
+                    // After unstick point (at or after FAQ): scrolls away
+                    if (isDesktop) {
+                        gsap.to(fixedComputerDisplay, { right: '-700px', opacity: 0, duration: 0.5, ease: 'power2.in' });
+                    } else {
+                        gsap.to(fixedComputerDisplay, { opacity: 0, scale: 0.9, duration: 0.5, ease: 'power2.in' });
+                    }
+                    pageWrapper.classList.remove('computer-active');
+                }
+            });
         }
     };
 
     // Initial call and scroll event listener
-    // Check if it's index.html or other pages
-    if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+    if (document.getElementById('hero')) {
         updateActiveSection();
         window.addEventListener('scroll', updateActiveSection);
     } else {

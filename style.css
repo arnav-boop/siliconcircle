@@ -174,7 +174,6 @@ header {
     max-width: 1600px; /* Increased max-width */
     margin: 0 auto;
     padding-top: 80px;
-    transition: grid-template-columns 0.8s ease-out; /* Added transition */
 }
 
 .side-nav {
