@@ -121,8 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Initial call and scroll event listener
-    // Check if it's index.html or other pages
-    if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+    // A more robust check for the main page, which works on deployed sites
+    if (document.getElementById('hero')) {
         updateActiveSection();
         window.addEventListener('scroll', updateActiveSection);
     } else {
