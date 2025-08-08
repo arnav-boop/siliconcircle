@@ -233,7 +233,6 @@ main {
     flex-direction: column;
     align-items: center;
     filter: drop-shadow(0 0 5px rgba(51, 255, 51, 0.3)); /* Further reduced green glow */
-    transition: right 0.8s ease-out, opacity 0.5s ease-out; /* Transition for right and opacity */
     pointer-events: none; /* Default to none, overridden when active */
 }
 
@@ -248,7 +247,6 @@ main {
     right: -700px; /* Slide off to the right */
     opacity: 0; /* Fade out as it slides */
     pointer-events: none; /* Disable interaction when hidden */
-    transition: right 0.8s ease-out, opacity 0.8s ease-out; /* Transition both right and opacity */
     transform: translateY(-50%); /* Keep vertical centering */
 }
 
@@ -400,12 +398,6 @@ section h1, section h2 {
     left: 20px;
     border: 1px solid #000;
     box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #000;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { background-color: #00ff00; }
-    50% { background-color: #33ff33; }
 }
 
 .dvd-tray {

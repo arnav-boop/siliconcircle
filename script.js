@@ -12,7 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const terminalOutput = document.querySelector('.terminal-output');
     const fixedComputerDisplay = document.querySelector('.fixed-computer-display');
     const pageWrapper = document.querySelector('.page-wrapper');
+    const powerLight = document.querySelector('.power-light');
 
+    gsap.to(powerLight, {
+        backgroundColor: '#33ff33',
+        duration: 1,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut'
+    });
     // Hide splash screen after a delay and play sound
     setTimeout(() => {
         splashScreen.classList.add('hidden');
@@ -74,39 +82,43 @@ document.addEventListener('DOMContentLoaded', () => {
             const computerHeight = fixedComputerDisplay.offsetHeight;
             const viewportHeight = window.innerHeight;
 
-            // The computer should start scrolling away when the top of the FAQ section is about to enter the viewport.
-            // We subtract the computer's height to ensure it's completely gone before the FAQ section is visible.
             const unstickScrollPosition = faqSectionTop - viewportHeight;
 
             if (window.scrollY < statsSectionTop) {
                 // On hero section: hidden
-                fixedComputerDisplay.classList.remove('active-scroll', 'locked', 'scrolling-away');
-                pageWrapper.classList.remove('computer-active');
-                fixedComputerDisplay.style.position = 'fixed';
-                fixedComputerDisplay.style.top = '100vh'; // Position it below the viewport
+                gsap.to(fixedComputerDisplay, {
+                    right: '-700px',
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    onComplete: () => {
+                        pageWrapper.classList.remove('computer-active');
+                    }
+                });
             } else if (window.scrollY >= statsSectionTop && window.scrollY < unstickScrollPosition) {
                 // After hero, before unstick point (FAQ): fixed in center
-                fixedComputerDisplay.classList.add('active-scroll', 'locked');
-                fixedComputerDisplay.classList.remove('scrolling-away');
                 pageWrapper.classList.add('computer-active');
-                fixedComputerDisplay.style.position = 'fixed';
-                fixedComputerDisplay.style.top = '50%';
+                gsap.to(fixedComputerDisplay, {
+                    right: '50px',
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    rotation: 0
+                });
             } else {
                 // After unstick point (at or after FAQ): scrolls away
-                fixedComputerDisplay.classList.add('scrolling-away');
-                fixedComputerDisplay.classList.remove('locked');
-                // The transitionend event will handle removing 'computer-active' from the page wrapper
+                gsap.to(fixedComputerDisplay, {
+                    right: '-700px',
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: 'power2.in',
+                    onComplete: () => {
+                        pageWrapper.classList.remove('computer-active');
+                    }
+                });
             }
         }
     };
-
-    // Listen for the end of the computer display's transition
-    fixedComputerDisplay.addEventListener('transitionend', (event) => { // Added event parameter
-        // Ensure we only act when the 'right' property transition ends
-        if (event.propertyName === 'right' && fixedComputerDisplay.classList.contains('scrolling-away')) {
-            pageWrapper.classList.remove('computer-active');
-        }
-    });
 
     // Initial call and scroll event listener
     // Check if it's index.html or other pages
