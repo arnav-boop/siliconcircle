@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum - Silicon Circle</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-init.js"></script>
+    <style>
+.forum-layout {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+}
+.forum-sidebar {
+    background: #181818;
+    padding: 2rem 1.5rem;
+    border-radius: 10px;
+    min-width: 220px;
+    max-width: 260px;
+    box-shadow: 0 2px 12px #0004;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.forum-sidebar h2 {
+    color: #33ff33;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+.forum-main {
+    flex: 1;
+    background: #181818;
+    padding: 2rem;
+    border-radius: 10px;
+    min-width: 0;
+    box-shadow: 0 2px 12px #0004;
+}
+.forum-post {
+    background: #222;
+    margin-bottom: 1.5rem;
+    padding: 1.2rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px #0002;
+    border-left: 4px solid #33ff33;
+}
+.forum-post-title {
+    color: #33ff33;
+    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+}
+.forum-post-body {
+    color: #a0a0a0;
+    margin-bottom: 0.5rem;
+}
+.forum-post-meta {
+    font-size: 0.95rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+.forum-comment {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+    background: #191919;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+}
+.forum-form {
+    margin-bottom: 2rem;
+}
+.forum-form input, .forum-form textarea {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background: #222;
+    color: #fff;
+}
+.forum-form button, #create-subreddit-btn {
+    background: #33ff33;
+    color: #181818;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+#subreddit-select {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.4rem;
+    border-radius: 5px;
+    background: #222;
+    color: #33ff33;
+    border: 1px solid #333;
+}
+html, body, * { cursor: auto !important; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Silicon Circle</div>
+        <nav class="top-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="apply.html">Apply</a></li>
+                <li><a href="forum.html" class="active">Forum</a></li>
+                <li><a href="auth.html">Login/Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+<div class="forum-layout">
+    <aside class="forum-sidebar">
+        <h2>Subreddits</h2>
+        <select id="subreddit-select"></select>
+        <button id="create-subreddit-btn" type="button">+ Create</button>
+        <div id="subreddit-desc-box" style="margin-top:1rem;font-size:1rem;color:#aaa;"></div>
+    </aside>
+    <section class="forum-main">
+        <h1>Forum</h1>
+        <form class="forum-form" id="post-form">
+            <input type="text" id="post-title" placeholder="Title" required />
+            <textarea id="post-body" placeholder="What's on your mind?" required></textarea>
+            <button type="submit">Post</button>
+        </form>
+        <div id="forum-posts"></div>
+    </section>
+</div>
+        <!-- Subreddit creation modal -->
+        <div id="subreddit-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;">
+            <div style="background:#222;padding:2rem;border-radius:10px;max-width:400px;margin:auto;">
+                <h2>Create Subreddit</h2>
+                <form id="subreddit-form">
+                    <input type="text" id="subreddit-name" placeholder="Subreddit name" required style="width:100%;margin-bottom:0.5rem;" />
+                    <textarea id="subreddit-desc" placeholder="Description" style="width:100%;margin-bottom:0.5rem;"></textarea>
+                    <button type="submit">Create</button>
+                    <button type="button" id="close-subreddit-modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="forum.js"></script>
+</body>
+</html>

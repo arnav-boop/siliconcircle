@@ -1,0 +1,40 @@
+Silicon Circle Project Checklist
+==============================
+
+What Has Been Done:
+-------------------
+- Login and Sign Up text visibility fixed on auth.html
+- Username field added to Sign Up
+- Splash screen and text visibility fixed on events.html
+- Computer animation on home page fixed (slide in/out)
+- Forum UI modernized (Reddit-like layout, sidebar, subreddit support)
+- Forum button added to topbar on all pages
+- Firebase SDK integrated (auth, firestore)
+- Firebase config added (firebase-init.js)
+- Login and Sign Up now use Firebase Auth
+- Email verification enforced for signup/login
+- LocalStorage used for session/JWT
+
+What Needs To Be Done:
+----------------------
+- Migrate all forum data (posts, comments, subreddits) to Firestore
+- Update forum.js to use Firestore for all forum operations
+- Add support for creating, editing, and deleting posts/comments in Firestore
+- Add upvote/downvote functionality for posts/comments
+- Add user profile pages (show posts, comments, karma, etc.)
+- Add subreddit creation, joining, and moderation features
+- Add notifications for replies, mentions, etc.
+- Improve error handling and user feedback throughout the app
+- Add loading indicators and UI polish
+- (Optional) Add mobile responsiveness and PWA support
+- (Optional) Add image/file upload support for posts/comments
+
+- Debug issue: Verification email not received after signup (check Firebase email template/config, spam folder, and code logic)
+
+Notes:
+------
+- Node.js/Express/MongoDB backend is deprecated in favor of Firebase
+- All authentication and forum data should be managed via Firebase
+- Email verification is now required for login
+
+Last updated: August 9, 2025
