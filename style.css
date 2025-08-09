@@ -169,11 +169,12 @@ header {
 
 .page-wrapper {
     display: grid;
-    grid-template-columns: 150px 1fr; /* Adjusted left column width */
-    gap: 2rem; /* Adjusted gap */
-    max-width: 1600px; /* Increased max-width */
+    grid-template-columns: 150px 1fr;
+    gap: 2rem;
+    max-width: 1600px;
     margin: 0 auto;
     padding-top: 80px;
+    transition: grid-template-columns 0.3s cubic-bezier(0.77,0,0.175,1) 0s;
 }
 
 .side-nav {
@@ -197,11 +198,6 @@ header {
     border-left: 2px solid transparent;
 }
 
-.side-nav li a:hover {
-    color: var(--primary);
-    background-color: var(--surface);
-}
-
 .side-nav li a.active {
     color: var(--primary);
     border-left: 2px solid var(--primary);
@@ -223,16 +219,18 @@ main {
 }
 
 .fixed-computer-display {
-    position: fixed; /* Always fixed */
-    top: 50%; /* Center vertically */
-    right: -700px; /* Start off-screen to the right */
+    position: fixed;
+    top: 50%;
+    right: -700px;
     transform: translateY(-50%);
     z-index: 50;
     display: flex;
     flex-direction: column;
     align-items: center;
-    filter: drop-shadow(0 0 5px rgba(51, 255, 51, 0.3)); /* Further reduced green glow */
-    pointer-events: none; /* Default to none, overridden when active */
+    filter: drop-shadow(0 0 5px rgba(51, 255, 51, 0.3));
+    pointer-events: none;
+    opacity: 0;
+    transition: right 0.3s cubic-bezier(0.77,0,0.175,1) 0s, opacity 0.3s 0s;
 }
 
 .page-wrapper.computer-active .fixed-computer-display {
@@ -340,7 +338,7 @@ section h1, section h2 {
 }
 
 .pixel-computer {
-    width: 600px; /* Enlarged size */
+    width: 500px; /* Enlarged size */
 }
 
 .monitor {
@@ -440,11 +438,40 @@ section h1, section h2 {
     font-weight: 700;
     margin-top: 1rem;
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'VT323', monospace;
 }
 
 .cta-button:hover {
     background-color: var(--surface);
     color: var(--primary);
+}
+
+.auth-form-container .cta-button {
+    color: var(--background);
+}
+
+
+.auth-form-container p {
+    opacity: 1;
+}
+
+.auth-form-container .form-group {
+    margin-bottom: 1rem;
+}
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+}
+
+.auth-form-container {
+    width: 400px;
+    padding: 2rem;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    margin: auto;
 }
 
 #terminal-section {
@@ -469,11 +496,43 @@ section h1, section h2 {
     width: calc(100% - 2rem);
     background-color: #000;
     color: var(--primary);
-    border: 1px solid var(--primary);
     padding: 0.8rem;
     font-family: 'VT323', monospace;
     font-size: 1.2rem;
     letter-spacing: 0.05em;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    color: var(--primary);
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    letter-spacing: 0.05em;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+#signup-username {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    color: var(--primary);
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    letter-spacing: 0.05em;
+    box-sizing: border-box;
+}
+
+label[for="signup-username"] {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--secondary);
+    font-family: 'VT323', monospace;
 }
 
 @media (max-width: 768px) {

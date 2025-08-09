@@ -1,0 +1,28 @@
+DEBUG LOG - Computer Display Visibility
+
+Date: Thursday, 7 August 2025
+
+--- PROBLEM DESCRIPTION ---
+Expected Behavior: The computer display (fixed-computer-display) should be visible when the user scrolls through the sections with IDs 'stats', 'events', 'apply', 'team', and 'about'. When visible, the main content (page-wrapper) should shift to the left by adding the 'computer-active' class. When outside these sections, or when the terminal is active, the computer display should be hidden, and the main content should shift back to its original position.
+
+Observed Behavior: The computer display is currently not visible at all, regardless of which section is in view. The 'page-wrapper' does not seem to be getting the 'computer-active' class, and the 'fixed-computer-display' remains hidden.
+
+--- STEPS TAKEN SO FAR ---
+1.  Initial request: User reported computer display was invisible.
+2.  First attempt: Modified `script.js` to remove the condition that hid the computer display when the terminal was visible. (Removed `else` block that added `scrolling-away` and removed `computer-active`).
+3.  Second attempt: Modified `script.js` to introduce `isComputerDisplaySectionVisible` logic. This was intended to make the computer display visible only for specific sections ('stats' through 'about') and shift content accordingly.
+
+--- HYPOTHESIS ---
+The current issue likely stems from the `isComputerDisplaySectionVisible` logic in `script.js`. It seems the condition `if (rect.top < window.innerHeight && rect.bottom > 0)` might not be correctly evaluating to true, or there's another condition preventing `pageWrapper.classList.add('computer-active')` and `fixedComputerDisplay.classList.remove('scrolling-away')` from executing.
+
+Specifically, the `targetSections` array might not be correctly matched with the `section.id` or the `getBoundingClientRect()` values are not as expected, leading `isComputerDisplaySectionVisible` to always be `false`.
+
+--- PLAN FOR FURTHER DEBUGGING ---
+1.  Add `console.log` statements within the `updateComputerDisplay` function in `script.js` to inspect:
+    *   `rect.top`, `rect.bottom`, `window.innerHeight` for each section.
+    *   `section.id` and whether it's included in `targetSections`.
+    *   The value of `isComputerDisplaySectionVisible`.
+    *   The value of `isTerminalSectionVisible`.
+    *   Whether the `if (isComputerDisplaySectionVisible && !isTerminalSectionVisible)` block is being entered.
+2.  Instruct the user to open the browser's developer console and report the output of these logs.
+3.  Based on the console output, refine the conditions for visibility.

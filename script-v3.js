@@ -39,6 +39,52 @@ document.addEventListener('DOMContentLoaded', () => {
         cursor.style.top = e.clientY + 'px';
     });
 
+    const handleComputerVisibility = (currentActiveSectionId) => {
+        const heroSection = document.getElementById('hero');
+        const statsSection = document.getElementById('stats');
+        const aboutSection = document.getElementById('about');
+        const faqSection = document.getElementById('faq');
+        const fixedComputerDisplay = document.querySelector('.fixed-computer-display');
+
+        if (fixedComputerDisplay) {
+            if (heroSection && statsSection && faqSection && aboutSection) {
+                const statsSectionTop = statsSection.offsetTop;
+                const aboutSectionBottom = aboutSection.offsetTop + aboutSection.offsetHeight;
+
+                // Using GSAP's matchMedia for responsive animations
+                gsap.matchMedia().add({
+                    isDesktop: `(min-width: 769px)`,
+                    isMobile: `(max-width: 768px)`
+                }, (context) => {
+                    let { isDesktop, isMobile } = context.conditions;
+
+                    if (currentActiveSectionId === 'hero' || currentActiveSectionId === 'faq') {
+                        // On hero section or faq section: hidden
+                        if (isDesktop) {
+                            gsap.to(fixedComputerDisplay, { right: '-700px', opacity: 0, duration: 0.5, ease: 'power2.out' });
+                        } else {
+                            gsap.to(fixedComputerDisplay, { opacity: 0, scale: 0.9, duration: 0.5, ease: 'power2.out' });
+                        }
+                        pageWrapper.classList.remove('computer-active');
+                        pageWrapper.classList.remove('computer-visible');
+                    } else if (currentActiveSectionId === 'apply' || (window.scrollY >= statsSectionTop && window.scrollY < aboutSectionBottom)) {
+                        // On apply section, or after hero and before unstick point (FAQ): fixed in center
+                        pageWrapper.classList.add('computer-active');
+                        if (isDesktop) {
+                            gsap.to(fixedComputerDisplay, { right: '50px', opacity: 1, duration: 0.8, ease: 'power2.out' });
+                            pageWrapper.classList.add('computer-visible');
+                        } else {
+                            gsap.to(fixedComputerDisplay, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' });
+                        }
+                    }
+                });
+            } else {
+                // On other pages, hide the computer
+                gsap.to(fixedComputerDisplay, { right: '-700px', opacity: 0, duration: 0.5, ease: 'power2.out' });
+            }
+        }
+    }
+
     // Function to update active nav link and computer screen image
     const updateActiveSection = () => {
         let currentActiveSectionId = 'hero';
@@ -48,11 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.scrollY >= sectionTop - sectionHeight / 3 && window.scrollY < sectionTop + sectionHeight - sectionHeight / 3) {
                 currentActiveSectionId = section.id;
                 // Trigger glitch effect before changing image
-                computerScreenImage.classList.add('glitch-effect');
-                setTimeout(() => {
-                    computerScreenImage.src = section.dataset.image;
-                    computerScreenImage.classList.remove('glitch-effect');
-                }, 300); // Glitch duration
+                if(computerScreenImage) {
+                    computerScreenImage.classList.add('glitch-effect');
+                    setTimeout(() => {
+                        computerScreenImage.src = section.dataset.image;
+                        computerScreenImage.classList.remove('glitch-effect');
+                    }, 300); // Glitch duration
+                }
 
                 // Animate content blocks
                 const contentBlocks = section.querySelectorAll('h1, h2, p, .subtitle, .card h3, .card h4, .card p, .content-block > *, li, span, a');
@@ -75,66 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Computer visibility and scrolling behavior
-        const heroSection = document.getElementById('hero');
-        const statsSection = document.getElementById('stats');
-        const faqSection = document.getElementById('faq');
-
-        if (heroSection && statsSection && faqSection) {
-            const statsSectionTop = statsSection.offsetTop;
-            const faqSectionTop = faqSection.offsetTop;
-            const viewportHeight = window.innerHeight;
-            const unstickScrollPosition = faqSectionTop - viewportHeight;
-
-            // Using GSAP's matchMedia for responsive animations
-            gsap.matchMedia().add({
-                isDesktop: `(min-width: 769px)`,
-                isMobile: `(max-width: 768px)`
-            }, (context) => {
-                let { isDesktop, isMobile } = context.conditions;
-
-                if (window.scrollY < statsSectionTop) {
-                    // On hero section: hidden
-                    if (isDesktop) {
-                        gsap.to(fixedComputerDisplay, { right: '-700px', opacity: 0, duration: 0.5, ease: 'power2.out' });
-                    } else {
-                        gsap.to(fixedComputerDisplay, { opacity: 0, scale: 0.9, duration: 0.5, ease: 'power2.out' });
-                    }
-                    pageWrapper.classList.remove('computer-active');
-                } else if (window.scrollY >= statsSectionTop && window.scrollY < unstickScrollPosition) {
-                    // After hero, before unstick point (FAQ): fixed in center
-                    pageWrapper.classList.add('computer-active');
-                    if (isDesktop) {
-                        gsap.to(fixedComputerDisplay, { right: '50px', opacity: 1, duration: 0.8, ease: 'power2.out' });
-                    } else {
-                        gsap.to(fixedComputerDisplay, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' });
-                    }
-                } else {
-                    // After unstick point (at or after FAQ): scrolls away
-                    if (isDesktop) {
-                        gsap.to(fixedComputerDisplay, { right: '-700px', opacity: 0, duration: 0.5, ease: 'power2.in' });
-                    } else {
-                        gsap.to(fixedComputerDisplay, { opacity: 0, scale: 0.9, duration: 0.5, ease: 'power2.in' });
-                    }
-                    pageWrapper.classList.remove('computer-active');
-                }
-            });
-        }
+        handleComputerVisibility(currentActiveSectionId);
     };
 
     // Initial call and scroll event listener
     if (document.getElementById('hero')) {
         updateActiveSection();
         window.addEventListener('scroll', updateActiveSection);
-    } else {
-        // For other pages (events.html, apply.html), make all content visible immediately
-        sections.forEach(section => {
-            const contentBlocks = section.querySelectorAll('h1, h2, p, .subtitle, .card h3, .card h4, .card p, .content-block > *, li, span, a');
-            contentBlocks.forEach(block => {
-                block.classList.add('is-visible');
-            });
-        });
     }
+    
+    handleComputerVisibility();
 
     // Smooth Scrolling
     navLinks.forEach(link => {
@@ -152,29 +150,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Terminal functionality
-    terminalInput.addEventListener('keydown', e => {
-        if (e.key === 'Enter') {
-            const command = terminalInput.value.trim();
-            terminalOutput.innerHTML += `\n> ${command}`;
-            terminalInput.value = '';
+    const terminal = document.getElementById('terminal-section');
+    if(terminal) {
+        terminalInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                const command = terminalInput.value.trim();
+                terminalOutput.innerHTML += `\n> ${command}`;
+                terminalInput.value = '';
 
-            switch (command.toLowerCase()) {
-                case 'help':
-                    terminalOutput.innerHTML += `\nAvailable commands: about, contact, clear`;
-                    break;
-                case 'about':
-                    terminalOutput.innerHTML += `\nSilicon Circle is a community by teens, for teens.`;
-                    break;
-                case 'contact':
-                    terminalOutput.innerHTML += `\nEmail: info@siliconcircle.com`;
-                    break;
-                case 'clear':
-                    terminalOutput.innerHTML = 'Welcome to the Silicon Circle terminal. Type \'help\' for commands.';
-                    break;
-                default:
-                    terminalOutput.innerHTML += `\nUnknown command: ${command}`; 
+                switch (command.toLowerCase()) {
+                    case 'help':
+                        terminalOutput.innerHTML += `\nAvailable commands: about, contact, clear`;
+                        break;
+                    case 'about':
+                        terminalOutput.innerHTML += `\nSilicon Circle is a community by teens, for teens.`;
+                        break;
+                    case 'contact':
+                        terminalOutput.innerHTML += `\nEmail: info@siliconcircle.com`;
+                        break;
+                    case 'clear':
+                        terminalOutput.innerHTML = 'Welcome to the Silicon Circle terminal. Type \'help\' for commands.';
+                        break;
+                    default:
+                        terminalOutput.innerHTML += `\nUnknown command: ${command}`; 
+                }
+                terminalOutput.scrollTop = terminalOutput.scrollHeight; // Scroll to bottom
             }
-            terminalOutput.scrollTop = terminalOutput.scrollHeight; // Scroll to bottom
-        }
-    });
+        });
+    }
 });
