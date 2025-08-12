@@ -14,27 +14,35 @@ What Has Been Done:
 - Login and Sign Up now use Firebase Auth
 - Email verification enforced for signup/login
 - LocalStorage used for session/JWT
+- Basic forum functionality implemented (create posts, comments, subreddits)
 
 What Needs To Be Done:
 ----------------------
-- Migrate all forum data (posts, comments, subreddits) to Firestore
-- Update forum.js to use Firestore for all forum operations
+- Migrate all forum data operations to Firestore (currently using localhost API)
+- Update forum.js to use Firestore for all forum operations instead of localhost API
 - Add support for creating, editing, and deleting posts/comments in Firestore
-- Add upvote/downvote functionality for posts/comments
-- Add user profile pages (show posts, comments, karma, etc.)
-- Add subreddit creation, joining, and moderation features
-- Add notifications for replies, mentions, etc.
+- Add upvote/downvote functionality for posts/comments using Firestore
+- Add user profile pages (show posts, comments, karma, etc.) with Firestore data
+- Add subreddit creation, joining, and moderation features with Firestore
+- Add notifications for replies, mentions, etc. using Firestore
 - Improve error handling and user feedback throughout the app
 - Add loading indicators and UI polish
 - (Optional) Add mobile responsiveness and PWA support
 - (Optional) Add image/file upload support for posts/comments
 
-- Debug issue: Verification email not received after signup (check Firebase email template/config, spam folder, and code logic)
+- Fix GitHub Pages/submodule deployment error (phantom submodule, github_files, .gitmodules)
+  - Remove github_files directory and properly configure GitHub Pages deployment
+
+- Debug issue: Verification email not received after signup
+  - Check Firebase email template/config
+  - Check spam folder
+  - Review code logic for email sending
 
 Notes:
 ------
 - Node.js/Express/MongoDB backend is deprecated in favor of Firebase
 - All authentication and forum data should be managed via Firebase
-- Email verification is now required for login
+- Email verification is required for login
+- Forum.js still uses localhost API endpoints and needs to be updated to use Firestore
 
-Last updated: August 9, 2025
+Last updated: August 12, 2025
