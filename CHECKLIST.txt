@@ -15,13 +15,16 @@ What Has Been Done:
 - Email verification enforced for signup/login
 - LocalStorage used for session/JWT
 - Basic forum functionality implemented (create posts, comments, subreddits)
+- Migrated all forum data operations to Firestore
+- Created forum-firestore.js with full Firestore implementation
+- Updated forum.html to use Firestore implementation
+- Added comprehensive README with setup instructions
+- Fixed GitHub Pages/submodule deployment error
+- Cleaned up repository and committed all changes
 
 What Needs To Be Done:
 ----------------------
-- Migrate all forum data operations to Firestore (currently using localhost API)
-- Update forum.js to use Firestore for all forum operations instead of localhost API
-- Add support for creating, editing, and deleting posts/comments in Firestore
-- Add upvote/downvote functionality for posts/comments using Firestore
+- Add support for editing and deleting posts/comments in Firestore
 - Add user profile pages (show posts, comments, karma, etc.) with Firestore data
 - Add subreddit creation, joining, and moderation features with Firestore
 - Add notifications for replies, mentions, etc. using Firestore
@@ -29,9 +32,6 @@ What Needs To Be Done:
 - Add loading indicators and UI polish
 - (Optional) Add mobile responsiveness and PWA support
 - (Optional) Add image/file upload support for posts/comments
-
-- Fix GitHub Pages/submodule deployment error (phantom submodule, github_files, .gitmodules)
-  - Remove github_files directory and properly configure GitHub Pages deployment
 
 - Debug issue: Verification email not received after signup
   - Check Firebase email template/config
@@ -41,8 +41,8 @@ What Needs To Be Done:
 Notes:
 ------
 - Node.js/Express/MongoDB backend is deprecated in favor of Firebase
-- All authentication and forum data should be managed via Firebase
+- All authentication and forum data is now managed via Firebase
 - Email verification is required for login
-- Forum.js still uses localhost API endpoints and needs to be updated to use Firestore
+- Forum now uses Firestore for all data operations
 
 Last updated: August 12, 2025
